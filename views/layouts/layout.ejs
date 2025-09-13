@@ -1,15 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
-<%- include('../partials/head') %>
+
+<head>
+    <%- include("../partials/head") %>
+</head>
 
 <body>
-    <div id="wrapper">
-        <%- include('../partials/header') %>
-        <%- include('../partials/navigation') %>
+    <!-- Page wrapper starts here -->
+    <div class="page-wrapper">
+        <%- include("../partials/header") %>
+            <%- include("../partials/navigation") %>
+
+                <main>
+                    <%- body %> <!-- this is where each page content goes -->
+                </main>
+
+                <%- include("../partials/footer") %>
     </div>
-        <main>
-            <%- body %>
-        </main>
-        <%- include('../partials/footer') %>
+    <!-- Page wrapper ends here -->
 </body>
+
 </html>
