@@ -195,15 +195,6 @@ nav a {
 
 /* Larger screens: rearrange */
 @media (min-width: 1000px) {
-
-  body{
-    background-image: none !important;
-    background-color: #fff !important;
-    /* plain white or whatever solid color you want */
-    background-attachment: initial !important;
-    background-size: initial !important;
-    background-position: initial !important;
-  }
   .inventory {
     grid-template-columns: 2fr 1fr;
     grid-template-areas:
