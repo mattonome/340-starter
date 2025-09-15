@@ -12,7 +12,7 @@ body {
   font-family: Arial, sans-serif;
 
   background-image: url("/images/checkerboard.jpg");
-  /* 👈 update path if needed */
+  /* 👈 update path */
   background-size: 30%;
   background-position: center;
   background-attachment: fixed;
@@ -191,6 +191,11 @@ nav a {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 15px;
+}
+
+.reviews li {
+  margin-bottom: 10px;
+  /* adds spacing */
 }
 
 /* Larger screens: rearrange */
