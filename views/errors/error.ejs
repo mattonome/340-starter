@@ -1,0 +1,16 @@
+<% if (title) { %>
+    <h1>
+        <%= title %>
+    </h1>
+    <% } else { %>
+        <h1>Oops! Something went wrong</h1>
+        <% } %>
+
+            <div class="error-message">
+                <p><%- message %></p>
+            </div>
+
+            <div class="funny-hint">
+                <p>Don't worry, even robots make mistakes sometimes 🤖</p>
+                <p>Try going back to <a href="/">Home</a>.</p>
+            </div>

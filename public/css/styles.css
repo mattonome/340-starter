@@ -198,8 +198,124 @@ nav a {
   /* adds spacing */
 }
 
+
+
+/* ********* Base Styles ********* */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  background-color: #f8f8f8;
+  color: #222;
+  line-height: 1.5;
+  padding: 20px;
+}
+
+a {
+  text-decoration: none;
+  color: #007bff;
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: #0056b3;
+}
+
+/* ********* Navigation ********* */
+nav ul {
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  margin-bottom: 30px;
+  gap: 15px;
+}
+
+nav ul li a {
+  padding: 8px 15px;
+  background-color: #007bff;
+  color: #fff;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+nav ul li a:hover {
+  background-color: #f8d009;
+  color: #000000;
+  transform: scale(1.05);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* ********* Inventory Grid ********* */
+#inv-display {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+  padding: 0;
+  list-style: none;
+}
+
+#inv-display li {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+#inv-display li:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* ********* Vehicle Image ********* */
+#inv-display li img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* ********* Name and Price ********* */
+.namePrice {
+  padding: 10px 15px;
+}
+
+.namePrice h2 {
+  font-size: 1.1rem;
+  margin-bottom: 5px;
+}
+
+.namePrice span {
+  display: inline-block;
+  font-weight: bold;
+  color: #28a745;
+}
+
+/* ********* Notice ********* */
+.notice {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #ff4d4d;
+  padding: 20px;
+}
+
+
+
+
+
+
 /* Larger screens: rearrange */
 @media (min-width: 1000px) {
+  #inv-display {
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    }
+  
+    nav ul {
+      justify-content: center;
+    }
   .inventory {
     grid-template-columns: 2fr 1fr;
     grid-template-areas:
