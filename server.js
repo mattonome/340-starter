@@ -11,8 +11,8 @@ const env = require("dotenv").config();
 const app = express();
 const expressLayouts = require("express-ejs-layouts");
 const baseController = require("./controllers/baseController");
-const inventoryRoute = require("./routes/inventoryRoute"); // use routes file
-const utilities = require("./utilities"); // ✅ import utilities
+const inventoryRoute = require("./routes/inventoryRoute");
+const utilities = require("./utilities");
 
 /* ***********************
  * Middleware
@@ -25,7 +25,7 @@ app.use(express.static("public"));
  *************************/
 app.set("view engine", "ejs");
 app.use(expressLayouts);
-app.set("layout", "./layouts/layout"); // layout file inside views/layouts
+app.set("layout", "./layouts/layout");
 
 /* ***********************
  * Routes
@@ -36,34 +36,44 @@ app.get("/", utilities.handleErrors(baseController.buildHome));
 // Inventory routes
 app.use("/inv", inventoryRoute);
 
-// 404 handler - must be last route
+// ✅ Force a server 500 error for testing
+app.get("/error", (req, res, next) => {
+  next(new Error("Intentional server error for testing!"));
+});
+
+// 404 handler - must be last normal route
 app.use((req, res, next) => {
-  next({ status: 404, message: 'Sorry, we appear to have lost that page.' });
+  next({ status: 404, message: "Sorry, we appear to have lost that page." });
 });
 
 /* ***********************
  * Express Error Handler
- * Place after all other middleware
  *************************/
 app.use(async (err, req, res, next) => {
-  let nav = await utilities.getNav()
-  console.error(`Error at: "${req.originalUrl}": ${err.message}`)
-  if(err.status == 404){ message = err.message} else {message = 'Oh no! There was a crash. Maybe try a different route?'}
-  res.render("errors/error", {
-    title: err.status || 'Server Error',
+  let nav = await utilities.getNav();
+  console.error(`Error at: "${req.originalUrl}": ${err.message}`);
+
+  let message;
+  if (err.status == 404) {
+    message = err.message;
+  } else {
+    message = "Oh no! There was a crash. Maybe try a different route?";
+  }
+
+  res.status(err.status || 500).render("errors/error", {
+    title: err.status || "Server Error",
     message,
-    nav
+    nav,
   });
 });
 
 /* ***********************
  * Local Server Information
- * Values from .env (environment) file
  *************************/
 const port = process.env.PORT || 3000;
 
 /* ***********************
- * Log statement to confirm server operation
+ * Log statement
  *************************/
 app.listen(port, () => {
   console.log(`App listening on http://localhost:${port}`);

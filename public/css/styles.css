@@ -303,20 +303,173 @@ nav ul li a:hover {
 }
 
 
+/* Vehicle detail styles */
+/* Vehicle detail styles */
+.vehicle-detail {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  /* image left, details right */
+  gap: 2rem;
+  align-items: start;
+  margin: 2rem 0;
+  padding: 1.5rem;
+  background: #c7edf8;
+  border-radius: 10px;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
+}
+
+.vehicle-image img {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  display: block;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.vehicle-info h1 {
+  font-size: 2rem;
+  margin-bottom: 0.75rem;
+  color: #222;
+}
+
+.vehicle-info .sub {
+  font-size: 1.1rem;
+  color: #777;
+  margin-bottom: 1.2rem;
+  font-style: italic;
+}
+
+.price-mile {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  align-items: baseline;
+  margin-bottom: 1.2rem;
+}
+
+.price-mile .price {
+  font-size: 1.8rem;
+  color: #007bff;
+  font-weight: 700;
+}
+
+.price-mile .miles {
+  font-size: 1rem;
+  color: #444;
+}
+
+.description {
+  margin-bottom: 1.5rem;
+}
+
+.description p {
+  margin-top: 0.5rem;
+  line-height: 1.6;
+  color: #333;
+}
+
+.specs {
+  list-style: none;
+  padding: 0;
+  margin-top: 1rem;
+}
+
+.specs li {
+  margin-bottom: 0.5rem;
+  padding-left: 1rem;
+  position: relative;
+  color: #555;
+}
+
+.specs li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: #007bff;
+  font-weight: bold;
+}
 
 
+/* -----------------------------
+   Responsive Vehicle Detail Fixes
+   Consolidated @media
+------------------------------ */
 
+/* Small screens (mobile & tablets) */
+@media (max-width: 999px) {
 
-/* Larger screens: rearrange */
+  .vehicle-detail,
+  .vehicle-detail-wrapper {
+    grid-template-columns: 1fr !important;
+    /* stack vertically */
+    gap: 1rem !important;
+    padding: 1rem !important;
+  }
+
+  .vehicle-image {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    width: 100% !important;
+  }
+
+  .vehicle-image img,
+  .vehicle-detail img,
+  .vehicle-detail-wrapper img {
+    display: block !important;
+    width: auto !important;
+    max-width: calc(100vw - 40px) !important;
+    /* prevent overflow */
+    height: auto !important;
+    max-height: 48vh !important;
+    /* cap height */
+    object-fit: contain !important;
+    margin: 0 auto !important;
+    border-radius: 8px !important;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08) !important;
+  }
+
+  .vehicle-info {
+    display: block !important;
+    width: 100% !important;
+    padding: 0.5rem 0 !important;
+    color: #222 !important;
+  }
+
+  .vehicle-info h1,
+  .vehicle-info h2 {
+    font-size: 1.3rem !important;
+    margin-bottom: 0.5rem !important;
+  }
+
+  .vehicle-info p,
+  .vehicle-info .description,
+  .vehicle-info .specs {
+    font-size: 0.98rem !important;
+    line-height: 1.45 !important;
+  }
+
+  #inv-display {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)) !important;
+  }
+
+  nav ul {
+    justify-content: flex-start !important;
+  }
+}
+
+/* Large screens (desktop and above) */
 @media (min-width: 1000px) {
   #inv-display {
-      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-    }
-  
-    nav ul {
-      justify-content: center;
-    }
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  }
+
+  nav ul {
+    justify-content: center;
+  }
+
   .inventory {
+    display: grid;
     grid-template-columns: 2fr 1fr;
     grid-template-areas:
       "title paragraph"
@@ -337,5 +490,46 @@ nav ul li a:hover {
   .inventory>.paragraph {
     grid-area: paragraph;
     align-self: start;
+  }
+
+  .vehicle-detail,
+  .vehicle-detail-wrapper {
+    grid-template-columns: 1fr 1.2fr !important;
+    /* image smaller than text */
+    gap: 2rem !important;
+    align-items: start !important;
+    padding: 1.5rem !important;
+  }
+
+  .vehicle-image {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: flex-start !important;
+  }
+
+  .vehicle-image img,
+  .vehicle-detail img,
+  .vehicle-detail-wrapper img {
+    display: block !important;
+    width: 100% !important;
+    max-width: 440px !important;
+    /* desktop image max width */
+    height: auto !important;
+    max-height: 70vh !important;
+    /* cap relative to viewport */
+    object-fit: contain !important;
+    margin: 0 !important;
+    border-radius: 8px !important;
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12) !important;
+  }
+
+  .vehicle-info {
+    padding-left: 1rem !important;
+    font-size: 1.05rem !important;
+  }
+
+  .vehicle-info h1,
+  .vehicle-info h2 {
+    font-size: 1.6rem !important;
   }
 }

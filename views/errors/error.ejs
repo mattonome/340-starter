@@ -1,16 +1,20 @@
-<% if (title) { %>
-    <h1>
-        <%= title %>
-    </h1>
-    <% } else { %>
-        <h1>Oops! Something went wrong</h1>
-        <% } %>
+<% if (title==404) { %>
+    <h1>Page Not Found (404)</h1>
+    <% } else if (title==500 || title==="Server Error" ) { %>
+        <h1>Internal Server Error (500)</h1>
+        <% } else { %>
+            <h1>Oops! Something went wrong</h1>
+            <% } %>
 
-            <div class="error-message">
-                <p><%- message %></p>
-            </div>
+                <div class="error-message">
+                    <p><%- message %></p>
+                </div>
 
-            <div class="funny-hint">
-                <p>Don't worry, even robots make mistakes sometimes 🤖</p>
-                <p>Try going back to <a href="/">Home</a>.</p>
-            </div>
+                <div class="funny-hint">
+                    <% if (title==404) { %>
+                        <p>We couldn’t find the page you were looking for. 🕵️‍♂️</p>
+                        <% } else { %>
+                            <p>Don't worry, even robots make mistakes sometimes 🤖</p>
+                            <% } %>
+                                <p>Try going back to <a href="/">Home</a>.</p>
+                </div>
