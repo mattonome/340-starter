@@ -50,7 +50,7 @@ app.use((req, res, next) => {
  * Express Error Handler
  *************************/
 app.use(async (err, req, res, next) => {
-  let nav = await utilities.getNav();
+  //let nav = await utilities.getNav();
   console.error(`Error at: "${req.originalUrl}": ${err.message}`);
 
   let message;
@@ -63,7 +63,7 @@ app.use(async (err, req, res, next) => {
   res.status(err.status || 500).render("errors/error", {
     title: err.status || "Server Error",
     message,
-    nav,
+    //nav,
   });
 });
 
