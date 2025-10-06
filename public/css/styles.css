@@ -550,6 +550,11 @@ nav ul li a:hover {
   flex-direction: column;
 }
 
+.login-form h1{
+  color: #ffffff;
+  padding-bottom: 16px;
+}
+
 .login-form label {
   margin-bottom: 0.3rem;
   font-weight: bold;
