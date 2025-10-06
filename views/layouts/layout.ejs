@@ -6,6 +6,12 @@
 </head>
 
 <body>
+    <!-- ✅ Flash messages section -->
+    <div class="flash-container">
+        <%- messages('partials/messageTemplate', locals) %>
+
+    </div>
+
     <!-- Page wrapper starts here -->
     <div class="page-wrapper">
         <%- include("../partials/header") %>

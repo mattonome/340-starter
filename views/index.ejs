@@ -1,6 +1,16 @@
 
 <section class="hero">
     <h1>Welcome to CSE Motors!</h1>
+    <%- messages() %>
+    <div id="messages">
+        <ul class="info">
+            <li>Email queued</li>
+            <li>Email sent</li>
+        </ul>
+        <ul class="error">
+            <li>Email delivery failed</li>
+        </ul>
+    </div>
     <div class="hero-img">
         <img src="/images/vehicles/delorean.jpg" alt="CSE Motors Vehicles">
     </div>
