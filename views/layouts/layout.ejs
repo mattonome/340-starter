@@ -8,10 +8,8 @@
 <body>
     <!-- ✅ Flash messages section -->
     <div class="flash-container">
-        <%- include("../partials/messageTemplate", { messages: messages() }) %>
+        <%- messages('partials/messageTemplate') %>
     </div>
-
-
 
     <!-- Page wrapper starts here -->
     <div class="page-wrapper">
@@ -27,7 +25,6 @@
     <!-- Page wrapper ends here -->
 
     <script src="/js/flash.js"></script>
-
 </body>
 
 </html>

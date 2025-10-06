@@ -1,8 +1,8 @@
 <% if (Object.keys(messages).length> 0) { %>
     <div id="flash-messages">
-        <% Object.keys(messages).forEach(function (type) { %>
+        <% Object.keys(messages).forEach(function(type) { %>
             <ul class="flash <%= type %>">
-                <% messages[type].forEach(function (message) { %>
+                <% messages[type].forEach(function(message) { %>
                     <li class="flash-item">
                         <span>
                             <%= message %>
