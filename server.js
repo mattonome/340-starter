@@ -5,15 +5,19 @@
 /* ***********************
  * Require Statements
  *************************/
-const session = require("express-session");
-const pool = require("./database/");
 const express = require("express");
-const env = require("dotenv").config();
-const app = express();
 const expressLayouts = require("express-ejs-layouts");
+const session = require("express-session");
+const pgSession = require("connect-pg-simple")(session);
+const flash = require("connect-flash");
+const expressMessages = require("express-messages");
+const dotenv = require("dotenv").config();
+const pool = require("./database/");
 const baseController = require("./controllers/baseController");
 const inventoryRoute = require("./routes/inventoryRoute");
 const utilities = require("./utilities");
+
+const app = express();
 
 /* ***********************
  * Middleware
@@ -22,21 +26,36 @@ const utilities = require("./utilities");
 app.use(express.static("public"));
 
 // Session setup
-app.use(session({
-  store: new (require("connect-pg-simple")(session))({
-    createTableIfMissing: true,
-    pool,
-  }),
-  secret: process.env.SESSION_SECRET,
-  resave: true,
-  saveUninitialized: true,
-  name: "sessionId",
-}));
+app.use(
+  session({
+    store: new pgSession({
+      createTableIfMissing: true,
+      pool,
+    }),
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    name: "sessionId",
+    cookie: { maxAge: 60000 }, // optional: expires after 1 minute
+  })
+);
 
-// Express Messages Middleware
-app.use(require("connect-flash")());
-app.use(function (req, res, next) {
-  res.locals.messages = require("express-messages")(req, res);
+// Flash middleware
+app.use(flash());
+
+// Attach flash messages to response locals
+app.use((req, res, next) => {
+  res.locals.messages = expressMessages(req, res);
+  next();
+});
+
+// ✅ Middleware to clear flash after one display
+app.use((req, res, next) => {
+  res.on("finish", () => {
+    if (req.session && req.session.flash) {
+      delete req.session.flash;
+    }
+  });
   next();
 });
 
@@ -64,7 +83,7 @@ app.get("/test-flash", (req, res) => {
   res.redirect("/");
 });
 
-// ✅ Force a server 500 error for testing
+// ✅ Simulate server error for testing
 app.get("/error", (req, res, next) => {
   next(new Error("Intentional server error for testing!"));
 });
@@ -98,5 +117,5 @@ app.use(async (err, req, res, next) => {
  *************************/
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
-  console.log(`App listening on http://localhost:${port}`);
+  console.log(`✅ App listening on http://localhost:${port}`);
 });

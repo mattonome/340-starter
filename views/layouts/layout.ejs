@@ -8,9 +8,10 @@
 <body>
     <!-- ✅ Flash messages section -->
     <div class="flash-container">
-        <%- messages('partials/messageTemplate', locals) %>
-
+        <%- include("../partials/messageTemplate", { messages: messages() }) %>
     </div>
+
+
 
     <!-- Page wrapper starts here -->
     <div class="page-wrapper">
@@ -24,6 +25,9 @@
                 <%- include("../partials/footer") %>
     </div>
     <!-- Page wrapper ends here -->
+
+    <script src="/js/flash.js"></script>
+
 </body>
 
 </html>
