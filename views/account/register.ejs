@@ -1,0 +1,46 @@
+
+
+    <body>
+        
+
+                <!-- Flash Messages -->
+                <div class="flash-container">
+                    <%- include("../partials/messageTemplate", { messages: messages() }) %>
+                </div>
+
+                <main>
+                    <section class="account-form">
+                        <h1>
+                            <%= title %>
+                        </h1>
+
+                        <form action="/account/register" method="POST" class="login-form">
+                            <label for="account_firstname">First Name</label>
+                            <input type="text" name="account_firstname" id="account_firstname" required>
+
+                            <label for="account_lastname">Last Name</label>
+                            <input type="text" name="account_lastname" id="account_lastname" required>
+
+                            <label for="account_email">Email Address</label>
+                            <input type="email" name="account_email" id="account_email" required>
+
+                            <label for="account_password">Password</label>
+                            <input type="password" name="account_password" id="account_password" required
+                                placeholder="Min 12 chars, 1 capital, 1 number, 1 special">
+
+                            <button type="submit" class="btn-login">Register</button>
+
+                            <p class="account-link">
+                                Already have an account? <a href="/account/login">Login here</a>
+                            </p>
+
+                        </p>
+
+
+                        </form>
+
+                        
+                    </section>
+                </main>
+
+    </body>

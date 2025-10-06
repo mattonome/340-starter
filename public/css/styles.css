@@ -657,6 +657,26 @@ nav ul li a:hover {
   cursor: pointer;
 }
 
+
+/* Account login link styling */
+.account-link {
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 1rem;
+  color: #ffffff;
+}
+
+.account-link a {
+  color: #e5ff00;
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+.account-link a:hover {
+  color: #ff0000;
+}
+
 /* -----------------------------
    Responsive Vehicle Detail Fixes
    Consolidated @media

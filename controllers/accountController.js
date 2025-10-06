@@ -11,7 +11,6 @@ async function buildLogin(req, res, next) {
     });
 }
 
-
 /* ****************************************
 *  Process login form
 **************************************** */
@@ -28,4 +27,16 @@ async function handleLogin(req, res, next) {
     }
 }
 
-module.exports = { buildLogin, handleLogin };
+/* ****************************************
+*  Deliver registration view
+**************************************** */
+async function buildRegister(req, res, next) {
+    const nav = await utilities.getNav();
+    res.render("account/register", {
+        title: "Register",
+        nav,
+        errors: null, // placeholder for validation errors
+    });
+}
+
+module.exports = { buildLogin, handleLogin, buildRegister };
