@@ -8,7 +8,7 @@
 <body>
     <!-- ✅ Flash messages section -->
     <div class="flash-container">
-        <%- messages('partials/messageTemplate') %>
+        <%- include('../partials/messageTemplate', { messages }) %>
     </div>
 
     <!-- Page wrapper starts here -->

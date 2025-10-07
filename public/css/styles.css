@@ -682,6 +682,137 @@ nav ul li a:hover {
   color: #ff0000;
 }
 
+
+/* Registration form */
+.registration-form {
+  max-width: 400px;
+  margin: 2rem auto;
+  padding: 2rem;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+}
+
+.registration-form label {
+  margin-bottom: 0.3rem;
+  font-weight: bold;
+}
+
+.registration-form input {
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.btn-register {
+  background-color: #28a745;
+  color: white;
+  padding: 0.6rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.btn-register:hover {
+  background-color: #218838;
+}
+
+/* Flash notice */
+.flash-notice {
+  text-align: center;
+  color: #28a745;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+/* Account link */
+.account-link {
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 1rem;
+}
+
+.account-link a {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+.account-link a:hover {
+  color: #0056b3;
+}
+
+
+/* Flash message container */
+.flash-container {
+  text-align: center;
+  margin: 1.5rem auto;
+}
+
+/* Base style for each message */
+.flash-item {
+  position: relative;
+  display: inline-block;
+  padding: 0.75rem 1.25rem;
+  margin: 0.5rem;
+  border-radius: 6px;
+  font-weight: 600;
+  color: #fff;
+  animation: fadeIn 0.3s ease-in;
+}
+
+/* Specific types */
+.flash-item.notice {
+  background-color: #4caf50;
+  /* green */
+}
+
+.flash-item.success {
+  background-color: #2196f3;
+  /* blue */
+}
+
+.flash-item.error {
+  background-color: #f44336;
+  /* red */
+}
+
+/* Close button */
+.flash-item .close-btn {
+  position: absolute;
+  right: 8px;
+  top: 4px;
+  border: none;
+  background: transparent;
+  color: #fff;
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+
+.flash-item .close-btn:hover {
+  color: #000;
+}
+
+/* Optional animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
 /* -----------------------------
    Responsive Vehicle Detail Fixes
    Consolidated @media

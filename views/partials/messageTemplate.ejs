@@ -1,4 +1,4 @@
-<% if (Object.keys(messages).length> 0) { %>
+<% if (messages && Object.keys(messages).length> 0) { %>
     <div id="flash-messages">
         <% Object.keys(messages).forEach(function(type) { %>
             <% messages[type].forEach(function(message) { %>
@@ -6,7 +6,7 @@
                     <span>
                         <%= message %>
                     </span>
-                    <button class="close-btn" onclick="closeFlash(this)">×</button>
+                    <button class="close-btn" onclick="this.parentElement.remove()">×</button>
                 </div>
                 <% }) %>
                     <% }) %>

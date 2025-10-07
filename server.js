@@ -17,6 +17,7 @@ const baseController = require("./controllers/baseController");
 const inventoryRoute = require("./routes/inventoryRoute");
 const utilities = require("./utilities");
 const accountRoute = require("./routes/accountRoute");
+const bodyParser = require("body-parser");
 
 
 const app = express();
@@ -26,6 +27,9 @@ const app = express();
  *************************/
 // Serve static files (CSS, JS, images)
 app.use(express.static("public"));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
+
 
 // Session setup
 app.use(
