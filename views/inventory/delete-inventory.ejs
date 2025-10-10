@@ -1,0 +1,31 @@
+
+
+    <body>
+      
+                <main>
+                    <h1>Delete Vehicle</h1>
+                    <p>Are you sure you want to delete the following vehicle?</p>
+
+                    <ul>
+                        <li><strong>Make:</strong>
+                            <%= itemData.inv_make %>
+                        </li>
+                        <li><strong>Model:</strong>
+                            <%= itemData.inv_model %>
+                        </li>
+                        <li><strong>Year:</strong>
+                            <%= itemData.inv_year %>
+                        </li>
+                        <li><strong>Price:</strong> $<%= itemData.inv_price.toLocaleString() %>
+                        </li>
+                    </ul>
+
+                    <form action="/inv/delete" method="post">
+                        <input type="hidden" name="inv_id" value="<%= itemData.inv_id %>">
+                        <button type="submit">Yes, Delete</button>
+                        <a href="/inv/management">Cancel</a>
+                    </form>
+                </main>
+    </body>
+
+</html>

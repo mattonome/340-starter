@@ -945,6 +945,262 @@ button:hover {
   background-color: #0056b3;
   /* darker blue on hover */
 }
+
+/*********************************************
+ * Management Page Styles
+ *********************************************/
+.management {
+  max-width: 1100px;
+  margin: 2rem auto;
+  padding: 2rem;
+}
+
+.management h1 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #222;
+}
+
+.flash-message {
+  margin: 1rem 0;
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+.flash-message .success {
+  color: #155724;
+  background-color: #d4edda;
+  border: 1px solid #c3e6cb;
+  padding: 0.75rem;
+  border-radius: 6px;
+}
+
+.flash-message .error {
+  color: #721c24;
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  padding: 0.75rem;
+  border-radius: 6px;
+}
+
+/* Management links */
+.management-links {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.management-links h2 {
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.management-links ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.management-links li {
+  margin: 0.75rem 0;
+}
+
+.management-links a {
+  display: inline-block;
+  text-decoration: none;
+  color: #fff;
+  background: #0077cc;
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  transition: background 0.2s ease;
+}
+
+.management-links a:hover {
+  background: #005fa3;
+}
+
+/* Inventory management section */
+.inventory-management {
+  background: #fff;
+  border-radius: 10px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+
+.inventory-management h2 {
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+
+/* Dropdown styling */
+#classificationForm {
+  margin-bottom: 1.5rem;
+}
+
+#classificationForm label {
+  font-weight: bold;
+  margin-right: 0.5rem;
+}
+
+#classificationForm select {
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Inventory table */
+.inventory-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  
+}
+
+.inventory-table th,
+.inventory-table td {
+  border: 1px solid #ddd;
+  padding: 0.75rem;
+  text-align: left;
+}
+
+.inventory-table th {
+  background-color: #f8f8f8;
+  font-weight: bold;
+}
+
+.inventory-table tr:nth-child(even) {
+  background-color: #fafafa;
+}
+
+.inventory-table tr:hover {
+  background-color: #f1f1f1;
+}
+
+/* Edit/Delete links */
+.inventory-table a {
+  text-decoration: none;
+  color: #0077cc;
+  font-weight: bold;
+}
+
+.inventory-table a:hover {
+  color: #005fa3;
+  text-decoration: underline;
+}
+
+
+/* ========== Form ========== */
+.inventory-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 40px;
+  
+}
+
+
+.inventory-form label {
+  font-weight: bold;
+  color: #444;
+}
+
+.inventory-form input,
+.inventory-form select,
+.inventory-form textarea {
+  width: 50%;
+  padding: 10px 2px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  background-color: #fdfdfd;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.inventory-form input:focus,
+.inventory-form select:focus,
+.inventory-form textarea:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 3px rgba(0, 123, 255, 0.3);
+  outline: none;
+}
+
+.inventory-form textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.inventory-form button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 12px;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  width: 20%;
+  margin-bottom: 40px;
+}
+
+.inventory-form button:hover {
+  background-color: #0056b3;
+}
+
+/* Flash messages */
+.flash-message {
+  margin-bottom: 1rem;
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+.flash-message .success {
+  color: #155724;
+  background-color: #d4edda;
+  padding: 0.75rem;
+  border-radius: 6px;
+}
+
+.flash-message .error {
+  color: #721c24;
+  background-color: #f8d7da;
+  padding: 0.75rem;
+  border-radius: 6px;
+}
+
+/* Validation errors */
+.validation-errors {
+  background: #ffe0e0;
+  border-left: 5px solid #ff4b4b;
+  padding: 0.8rem 1rem;
+  margin-bottom: 1rem;
+  border-radius: 6px;
+}
+
+.validation-errors ul {
+  margin: 0;
+  padding-left: 1.5rem;
+}
+
+.validation-errors li {
+  color: #b20000;
+}
+
+@media (max-width: 600px) {
+  main.add-inventory {
+    padding: 1.5rem;
+  }
+}
+
+
+
+
+
 /* Optional animation */
 @keyframes fadeIn {
   from {

@@ -11,6 +11,7 @@ async function buildLogin(req, res) {
     title: "Login",
     nav,
     messages: req.flash(),
+    errors: [], // ✅ added
   });
 }
 
@@ -31,6 +32,7 @@ async function handleLogin(req, res) {
         title: "Login",
         nav,
         messages: req.flash(),
+        errors: [], // ✅ added
       });
     }
 
@@ -43,6 +45,7 @@ async function handleLogin(req, res) {
         title: "Login",
         nav,
         messages: req.flash(),
+        errors: [], // ✅ added
       });
     }
 
@@ -56,6 +59,7 @@ async function handleLogin(req, res) {
       title: "Login",
       nav,
       messages: req.flash(),
+      errors: [], // ✅ added
     });
   }
 }
@@ -69,6 +73,7 @@ async function buildRegister(req, res) {
     title: "Register",
     nav,
     messages: req.flash(),
+    errors: [], // ✅ added
   });
 }
 
@@ -80,10 +85,26 @@ async function registerAccount(req, res) {
   const { account_firstname, account_lastname, account_email, account_password } = req.body;
 
   try {
-    // ✅ Step 1: Hash the password
+    // ✅ Step 1: Validate password (now min length = 6)
+    const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{6,}$/;
+
+    if (!passwordRegex.test(account_password)) {
+      req.flash(
+        "error",
+        "❌ Password must be at least 6 characters long and contain at least 1 uppercase letter, 1 number, and 1 special character."
+      );
+      return res.status(400).render("account/register", {
+        title: "Register",
+        nav,
+        messages: req.flash(),
+        errors: [], // ✅ added
+      });
+    }
+
+    // ✅ Step 2: Hash the password
     const hashedPassword = await bcrypt.hash(account_password, 10);
 
-    // ✅ Step 2: Save user to DB
+    // ✅ Step 3: Save user to DB
     const regResult = await accountModel.registerAccount(
       account_firstname,
       account_lastname,
@@ -91,13 +112,14 @@ async function registerAccount(req, res) {
       hashedPassword
     );
 
-    // ✅ Step 3: Handle result
+    // ✅ Step 4: Handle result
     if (regResult) {
       req.flash("success", `🎉 Congratulations, ${account_firstname}! Please log in.`);
       return res.status(201).render("account/login", {
         title: "Login",
         nav,
         messages: req.flash(),
+        errors: [], // ✅ added
       });
     } else {
       req.flash("error", "❌ Registration failed. Please try again.");
@@ -105,6 +127,7 @@ async function registerAccount(req, res) {
         title: "Register",
         nav,
         messages: req.flash(),
+        errors: [], // ✅ added
       });
     }
   } catch (error) {
@@ -114,6 +137,7 @@ async function registerAccount(req, res) {
       title: "Register",
       nav,
       messages: req.flash(),
+      errors: [], // ✅ added
     });
   }
 }
@@ -127,6 +151,7 @@ async function buildAccount(req, res) {
     title: "My Account",
     nav,
     messages: req.flash(),
+    errors: [], // ✅ added
   });
 }
 

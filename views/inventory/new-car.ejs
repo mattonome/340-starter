@@ -1,0 +1,87 @@
+
+
+    <body>
+      
+
+                <main class="add-inventory">
+                    <h1>
+                        <%= title %>
+                    </h1>
+
+                    <!-- Flash messages -->
+                    <% if (messages && (messages.notice || messages.error)) { %>
+                        <div class="flash-message">
+                            <% if (messages.notice) { %>
+                                <p class="success">
+                                    <%= messages.notice %>
+                                </p>
+                                <% } %>
+                                    <% if (messages.error) { %>
+                                        <p class="error">
+                                            <%= messages.error %>
+                                        </p>
+                                        <% } %>
+                        </div>
+                        <% } %>
+
+                            <!-- Validation errors -->
+                            <% if (errors && errors.length> 0) { %>
+                                <div class="validation-errors">
+                                    <ul>
+                                        <% errors.forEach(err=> { %>
+                                            <li>
+                                                <%= err.msg %>
+                                            </li>
+                                            <% }) %>
+                                    </ul>
+                                </div>
+                                <% } %>
+
+                                    <!-- Inventory form -->
+                                    <form action="/inv/add-inventory" method="POST" class="inventory-form">
+                                        <label for="classification_id">Classification:</label>
+                                        <%- classificationSelect %>
+
+                                            <label for="inv_make">Make:</label>
+                                            <input type="text" id="inv_make" name="inv_make"
+                                                value="<%= inv_make || '' %>" required>
+
+                                            <label for="inv_model">Model:</label>
+                                            <input type="text" id="inv_model" name="inv_model"
+                                                value="<%= inv_model || '' %>" required>
+
+                                            <label for="inv_year">Year:</label>
+                                            <input type="number" id="inv_year" name="inv_year"
+                                                value="<%= inv_year || '' %>" required>
+
+                                            <label for="inv_description">Description:</label>
+                                            <textarea id="inv_description" name="inv_description"
+                                                required><%= inv_description || '' %></textarea>
+
+                                            <label for="inv_image">Image Path:</label>
+                                            <input type="text" id="inv_image" name="inv_image"
+                                                value="<%= inv_image || '' %>" required>
+
+                                            <label for="inv_thumbnail">Thumbnail Path:</label>
+                                            <input type="text" id="inv_thumbnail" name="inv_thumbnail"
+                                                value="<%= inv_thumbnail || '' %>" required>
+
+                                            <label for="inv_price">Price (₦):</label>
+                                            <input type="number" id="inv_price" name="inv_price"
+                                                value="<%= inv_price || '' %>" required>
+
+                                            <label for="inv_miles">Miles:</label>
+                                            <input type="number" id="inv_miles" name="inv_miles"
+                                                value="<%= inv_miles || '' %>" required>
+
+                                            <label for="inv_color">Color:</label>
+                                            <input type="text" id="inv_color" name="inv_color"
+                                                value="<%= inv_color || '' %>" required>
+
+                                            <button type="submit">Add Inventory</button>
+                                    </form>
+                </main>
+
+    </body>
+
+</html>
