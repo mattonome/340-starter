@@ -59,7 +59,7 @@ invCont.buildByClassificationId = async function (req, res, next) {
   try {
     const classification_id = req.params.classificationId
     const data = await invModel.getInventoryByClassificationId(classification_id)
-    const grid = await utilities.buildClassificationGrid(data)
+    const grid = await utilities.buildClassificationGrid(data) // ✅ restored await
     const nav = await utilities.getNav()
     const className = data[0]?.classification_name || "Unknown"
 
@@ -169,7 +169,7 @@ invCont.buildAddInventory = async function (req, res, next) {
       inv_thumbnail: "",
       inv_price: "",
       inv_miles: "",
-      inv_color: "",          // ✅ must be defined
+      inv_color: "",
       classification_id: "",
     })
   } catch (err) {
@@ -191,7 +191,7 @@ invCont.addInventory = async function (req, res, next) {
       inv_thumbnail,
       inv_price,
       inv_miles,
-      inv_color,            // ✅ included
+      inv_color,
       classification_id,
     } = req.body
 
@@ -204,7 +204,7 @@ invCont.addInventory = async function (req, res, next) {
       inv_thumbnail,
       inv_price,
       inv_miles,
-      inv_color,           // ✅ included
+      inv_color,
       classification_id,
     })
 
@@ -237,7 +237,7 @@ invCont.addInventory = async function (req, res, next) {
         inv_thumbnail,
         inv_price,
         inv_miles,
-        inv_color,       // ✅ included
+        inv_color,
         classification_id,
       })
     }
@@ -284,7 +284,7 @@ invCont.updateInventory = async function (req, res, next) {
       inv_thumbnail,
       inv_price,
       inv_miles,
-      inv_color,          // ✅ included
+      inv_color,
       classification_id,
     } = req.body
 
@@ -297,7 +297,7 @@ invCont.updateInventory = async function (req, res, next) {
       inv_thumbnail,
       inv_price,
       inv_miles,
-      inv_color,          // ✅ included
+      inv_color,
       classification_id,
     })
 
@@ -354,4 +354,5 @@ invCont.deleteInventory = async function (req, res, next) {
   }
 }
 
+// ✅ Export all controller functions
 module.exports = invCont

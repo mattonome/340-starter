@@ -1,110 +1,49 @@
-const utilities = require("../utilities");
-const accountModel = require("../models/account-model");
+/******************************************
+ * Account Controller
+ ******************************************/
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const accountModel = require("../models/account-model");
+const utilities = require("../utilities/");
 
-/* ****************************************
- *  Deliver login view
- **************************************** */
+/******************************************
+ * Deliver Login View
+ ******************************************/
 async function buildLogin(req, res) {
   const nav = await utilities.getNav();
+  const messages = req.flash("notice"); // ✅ fetch flash message
   res.render("account/login", {
     title: "Login",
     nav,
-    messages: req.flash(),
-    errors: [], // ✅ added
+    errors: null,
+    messages,
   });
 }
 
-/* ****************************************
- *  Process login form (with password check)
- **************************************** */
-async function handleLogin(req, res) {
-  const nav = await utilities.getNav();
-  const { account_email, account_password } = req.body;
-
-  try {
-    // 1️⃣ Find the user by email
-    const account = await accountModel.getAccountByEmail(account_email);
-
-    if (!account) {
-      req.flash("error", "❌ No account found with that email.");
-      return res.status(400).render("account/login", {
-        title: "Login",
-        nav,
-        messages: req.flash(),
-        errors: [], // ✅ added
-      });
-    }
-
-    // 2️⃣ Compare password with hashed password in DB
-    const isMatch = await bcrypt.compare(account_password, account.account_password);
-
-    if (!isMatch) {
-      req.flash("error", "❌ Incorrect password. Please try again.");
-      return res.status(400).render("account/login", {
-        title: "Login",
-        nav,
-        messages: req.flash(),
-        errors: [], // ✅ added
-      });
-    }
-
-    // 3️⃣ If success — create session or redirect
-    req.flash("success", `🎉 Welcome back, ${account.account_firstname}!`);
-    return res.redirect("/account");
-  } catch (error) {
-    console.error("Login error:", error.message);
-    req.flash("error", "An unexpected error occurred during login.");
-    return res.status(500).render("account/login", {
-      title: "Login",
-      nav,
-      messages: req.flash(),
-      errors: [], // ✅ added
-    });
-  }
-}
-
-/* ****************************************
- *  Deliver registration view
- **************************************** */
+/******************************************
+ * Deliver Registration View
+ ******************************************/
 async function buildRegister(req, res) {
   const nav = await utilities.getNav();
   res.render("account/register", {
     title: "Register",
     nav,
-    messages: req.flash(),
-    errors: [], // ✅ added
+    errors: null,
   });
 }
 
-/* ****************************************
- *  Process registration (with password hashing)
- **************************************** */
+/******************************************
+ * Register a New Account
+ ******************************************/
 async function registerAccount(req, res) {
   const nav = await utilities.getNav();
   const { account_firstname, account_lastname, account_email, account_password } = req.body;
 
   try {
-    // ✅ Step 1: Validate password (now min length = 6)
-    const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{6,}$/;
-
-    if (!passwordRegex.test(account_password)) {
-      req.flash(
-        "error",
-        "❌ Password must be at least 6 characters long and contain at least 1 uppercase letter, 1 number, and 1 special character."
-      );
-      return res.status(400).render("account/register", {
-        title: "Register",
-        nav,
-        messages: req.flash(),
-        errors: [], // ✅ added
-      });
-    }
-
-    // ✅ Step 2: Hash the password
+    // Hash the password
     const hashedPassword = await bcrypt.hash(account_password, 10);
 
-    // ✅ Step 3: Save user to DB
+    // Save the account
     const regResult = await accountModel.registerAccount(
       account_firstname,
       account_lastname,
@@ -112,56 +51,96 @@ async function registerAccount(req, res) {
       hashedPassword
     );
 
-    // ✅ Step 4: Handle result
     if (regResult) {
-      req.flash("success", `🎉 Congratulations, ${account_firstname}! Please log in.`);
-      return res.status(201).render("account/login", {
-        title: "Login",
-        nav,
-        messages: req.flash(),
-        errors: [], // ✅ added
-      });
+      req.flash("notice", "Registration successful. Please log in."); // ✅ flash message
+      return res.redirect("/account/login"); // ✅ redirect instead of render
     } else {
-      req.flash("error", "❌ Registration failed. Please try again.");
       return res.status(500).render("account/register", {
         title: "Register",
         nav,
-        messages: req.flash(),
-        errors: [], // ✅ added
+        errors: ["Registration failed. Please try again."],
       });
     }
   } catch (error) {
-    console.error("❌ Registration error:", error.message);
-    req.flash("error", "An unexpected error occurred during registration.");
+    console.error("Registration Error:", error);
     return res.status(500).render("account/register", {
       title: "Register",
       nav,
-      messages: req.flash(),
-      errors: [], // ✅ added
+      errors: ["Error encrypting or saving account data."],
     });
   }
 }
 
-/* ****************************************
- *  Deliver account management view
- **************************************** */
-async function buildAccount(req, res) {
+/******************************************
+ * Handle Account Login
+ ******************************************/
+async function accountLogin(req, res) {
   const nav = await utilities.getNav();
-  res.render("account/account", {
-    title: "My Account",
+  const { account_email, account_password } = req.body;
+
+  try {
+    // Get user by email
+    const accountData = await accountModel.getAccountByEmail(account_email);
+
+    if (!accountData) {
+      return res.status(400).render("account/login", {
+        title: "Login",
+        nav,
+        errors: ["No account found with that email."],
+      });
+    }
+
+    // Compare passwords
+    const match = await bcrypt.compare(account_password, accountData.account_password);
+    if (!match) {
+      return res.status(400).render("account/login", {
+        title: "Login",
+        nav,
+        errors: ["Incorrect password. Try again."],
+      });
+    }
+
+    // Create JWT token
+    delete accountData.account_password;
+    const token = jwt.sign(accountData, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "1h" });
+
+    // Set token as HTTP-only cookie
+    res.cookie("jwt", token, {
+      httpOnly: true,
+      maxAge: 3600 * 1000,
+    });
+
+    return res.redirect("/account");
+  } catch (error) {
+    console.error("Login Error:", error);
+    return res.status(500).render("account/login", {
+      title: "Login",
+      nav,
+      errors: ["An unexpected error occurred. Please try again."],
+    });
+  }
+}
+
+/******************************************
+ * Deliver Account Management View
+ ******************************************/
+async function buildAccountManagement(req, res, next) {
+  const nav = await utilities.getNav();
+
+  res.render("account/account-management", {
+    title: "Account Management",
     nav,
-    messages: req.flash(),
-    errors: [], // ✅ added
+    errors: null,
   });
 }
 
-/* ****************************************
- *  Exports
- **************************************** */
+/******************************************
+ * Module Exports
+ ******************************************/
 module.exports = {
   buildLogin,
-  handleLogin,
   buildRegister,
   registerAccount,
-  buildAccount,
+  accountLogin,
+  buildAccountManagement, // ✅ make sure this is exported
 };

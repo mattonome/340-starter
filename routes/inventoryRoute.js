@@ -11,7 +11,10 @@ const invValidate = require("../utilities/inv-validation")
 /* ****************************************
  *  Inventory Management View
  * **************************************** */
-router.get("/", utilities.handleErrors(invController.buildManagementView))
+router.get(
+  "/",
+  utilities.handleErrors(invController.buildManagementView)
+)
 
 /* ****************************************
  *  Build inventory by classification view
@@ -66,10 +69,12 @@ router.post(
 )
 
 /* ****************************************
- *  Build Management Table with Dropdown Filter
+ *  Build Management Table (Dropdown Filter)
  * **************************************** */
+// 🛠 FIXED: Use /management-table to avoid clashing with root ("/")
+// The previous "/management/:classificationId?" caused confusion
 router.get(
-  "/management/:classificationId?",
+  "/management-table",
   utilities.handleErrors(invController.buildManagementTable)
 )
 

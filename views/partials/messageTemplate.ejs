@@ -1,14 +1,15 @@
 <% if (messages && Object.keys(messages).length> 0) { %>
     <div id="flash-messages">
         <% Object.keys(messages).forEach(function(type) { %>
-            <% messages[type].forEach(function(message) { %>
-                <div class="flash-item <%= type %>">
-                    <span>
-                        <%= message %>
-                    </span>
-                    <button class="close-btn" onclick="this.parentElement.remove()">×</button>
-                </div>
-                <% }) %>
+            <% const msgs=Array.isArray(messages[type]) ? messages[type] : [messages[type]]; %>
+                <% msgs.forEach(function(message) { %>
+                    <div class="flash-item <%= type %>">
+                        <span>
+                            <%= message %>
+                        </span>
+                        <button class="close-btn" onclick="this.parentElement.remove()">×</button>
+                    </div>
                     <% }) %>
+                        <% }) %>
     </div>
     <% } %>

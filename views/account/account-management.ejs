@@ -1,0 +1,33 @@
+
+
+
+    <body>
+       
+
+
+                <main class="account-management">
+                    <h1>
+                        <%= title %>
+                    </h1>
+
+                    <section class="account-info">
+                        <h2>Welcome, <%= accountData.account_firstname %>
+                                <%= accountData.account_lastname %>!</h2>
+                        <p><strong>Email:</strong>
+                            <%= accountData.account_email %>
+                        </p>
+                        <p><strong>Account Type:</strong>
+                            <%= accountData.account_type %>
+                        </p>
+
+                        <div class="actions">
+                            <a href="/inv" class="btn">Manage Inventory</a>
+                            <a href="/account/logout" class="btn btn-logout">Logout</a>
+                        </div>
+                    </section>
+                </main>
+
+
+            </body>
+
+</html>

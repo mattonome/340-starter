@@ -1,6 +1,6 @@
-/* ******************************************
+/******************************************
  * Main Server File (server.js)
- *******************************************/
+ ******************************************/
 
 /* ***********************
  * Require Statements
@@ -11,6 +11,7 @@ const session = require("express-session");
 const pgSession = require("connect-pg-simple")(session);
 const flash = require("connect-flash");
 const expressMessages = require("express-messages");
+const cookieParser = require("cookie-parser");
 const dotenv = require("dotenv").config();
 const pool = require("./database/");
 const baseController = require("./controllers/baseController");
@@ -19,20 +20,26 @@ const accountRoute = require("./routes/accountRoute");
 const utilities = require("./utilities");
 const bodyParser = require("body-parser");
 
+/* ***********************
+ * Express App
+ *************************/
 const app = express();
 
 /* ***********************
  * Middleware
  *************************/
 
-// ✅ Serve static files (CSS, JS, Images)
+// Serve static files (CSS, JS, Images)
 app.use(express.static("public"));
 
-// ✅ Body parser for forms and JSON
+// Body parser for forms and JSON
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// ✅ Session setup (stored in PostgreSQL)
+// Cookie parser (for JWT)
+app.use(cookieParser());
+
+// Session setup (stored in PostgreSQL)
 app.use(
   session({
     store: new pgSession({
@@ -45,22 +52,22 @@ app.use(
     name: "sessionId",
     cookie: {
       maxAge: 1000 * 60 * 10, // 10 minutes
-      secure: false, // set to true if using HTTPS
+      secure: false, // set true if using HTTPS
       httpOnly: true,
     },
   })
 );
 
-// ✅ Flash middleware
+// Flash middleware
 app.use(flash());
 
-// ✅ Attach flash messages to response locals
+// Attach flash messages to response locals
 app.use((req, res, next) => {
   res.locals.messages = expressMessages(req, res);
   next();
 });
 
-// ✅ Middleware to clear flash messages after one display
+// Middleware to clear flash messages after display
 app.use((req, res, next) => {
   res.on("finish", () => {
     if (req.session && req.session.flash) {
@@ -71,7 +78,7 @@ app.use((req, res, next) => {
 });
 
 /* ***********************
- * View Engine and Templates
+ * View Engine and Layouts
  *************************/
 app.set("view engine", "ejs");
 app.use(expressLayouts);
@@ -81,16 +88,16 @@ app.set("layout", "./layouts/layout");
  * Routes
  *************************/
 
-// ✅ Home route
+// Home route
 app.get("/", utilities.handleErrors(baseController.buildHome));
 
-// ✅ Inventory routes
+// Inventory routes
 app.use("/inv", inventoryRoute);
 
-// ✅ Account routes
+// Account routes
 app.use("/account", accountRoute);
 
-// ✅ Flash test route
+// Flash test route
 app.get("/test-flash", (req, res) => {
   req.flash("info", "✅ Email queued");
   req.flash("info", "📨 Email sent");
@@ -98,12 +105,12 @@ app.get("/test-flash", (req, res) => {
   res.redirect("/");
 });
 
-// ✅ Simulated server error route
+// Simulated server error route
 app.get("/error", (req, res, next) => {
   next(new Error("Intentional server error for testing!"));
 });
 
-// ✅ 404 handler
+// 404 handler (catch-all)
 app.use((req, res, next) => {
   next({ status: 404, message: "Sorry, we appear to have lost that page." });
 });
