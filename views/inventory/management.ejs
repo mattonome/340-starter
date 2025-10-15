@@ -1,111 +1,106 @@
+<body>
+    <main class="management">
+        <h1>
+            <%= title %>
+        </h1>
 
-
-    <body>
-       
-
-                <main class="management">
-                    <h1>
-                        <%= title %>
-                    </h1>
-
-                    <!-- Flash / Message Handling -->
-                    <% if (messages && (messages.notice || messages.error)) { %>
-                        <div class="flash-message">
-                            <% if (messages.notice) { %>
-                                <p class="success">
-                                    <%= messages.notice %>
-                                </p>
-                                <% } %>
-                                    <% if (messages.error) { %>
-                                        <p class="error">
-                                            <%= messages.error %>
-                                        </p>
-                                        <% } %>
+        <!-- Flash / Message Handling -->
+        <% if (messages && Object.keys(messages).length> 0) { %>
+            <div id="flash-messages">
+                <% Object.keys(messages).forEach(function(type) { %>
+                    <% messages[type].forEach(function(message) { %>
+                        <div class="flash-item <%= type %>">
+                            <span>
+                                <%= message %>
+                            </span>
+                            <button class="close-btn" onclick="this.parentElement.remove()">×</button>
                         </div>
-                        <% } %>
+                        <% }) %>
+                            <% }) %>
+            </div>
+            <% } %>
 
-                            <!-- Management Links -->
-                            <section class="management-links">
-                                <h2>Inventory Management</h2>
-                                <ul>
-                                    <li><a href="/inv/add-classification">Add New Classification</a></li>
-                                    <li><a href="/inv/add-inventory">Add New Inventory Item</a></li>
-                                </ul>
-                            </section>
+                <!-- Management Links -->
+                <section class="management-links">
+                    <h2>Inventory Management</h2>
+                    <ul>
+                        <li><a href="/inv/add-classification">Add New Classification</a></li>
+                        <li><a href="/inv/add-inventory">Add New Inventory Item</a></li>
+                    </ul>
+                </section>
 
-                            <!-- ===============================
+                <!-- ===============================
              Classification Dropdown & Table
              =============================== -->
-                            <section class="inventory-management">
-                                <h2>Manage Existing Inventory</h2>
+                <section class="inventory-management">
+                    <h2>Manage Existing Inventory</h2>
 
-                                <form id="classificationForm" action="/inv/management" method="get">
-                                    <label for="classification_id">Select a Classification:</label>
-                                    <select id="classification_id" name="classification_id"
-                                        onchange="this.form.submit()">
-                                        <option value="">-- Select --</option>
-                                        <% if (classifications && classifications.length> 0) { %>
-                                            <% classifications.forEach(classification=> { %>
-                                                <option value="<%= classification.classification_id %>"
-                                                    <%=selectedClassification==classification.classification_id
-                                                    ? "selected" : "" %>>
-                                                    <%= classification.classification_name %>
-                                                </option>
-                                                <% }) %>
-                                                    <% } %>
-                                    </select>
-                                </form>
-
-                                <% if (vehicles && vehicles.length> 0) { %>
-                                    <table class="inventory-table">
-                                        <thead>
-                                            <tr>
-                                                <th>Classification</th>
-                                                <th>Make</th>
-                                                <th>Model</th>
-                                                <th>Year</th>
-                                                <th>Price</th>
-                                                <th>Color</th>
-                                                <th>Miles</th>
-                                                <th>Edit</th>
-                                                <th>Delete</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <% vehicles.forEach(vehicle=> { %>
-                                                <tr>
-                                                    <td>
-                                                        <%= vehicle.classification_name %>
-                                                    </td>
-                                                    <td>
-                                                        <%= vehicle.inv_make %>
-                                                    </td>
-                                                    <td>
-                                                        <%= vehicle.inv_model %>
-                                                    </td>
-                                                    <td>
-                                                        <%= vehicle.inv_year %>
-                                                    </td>
-                                                    <td>$<%= vehicle.inv_price.toLocaleString() %>
-                                                    </td>
-                                                    <td>
-                                                        <%= vehicle.inv_color %>
-                                                    </td>
-                                                    <td>
-                                                        <%= vehicle.inv_miles.toLocaleString() %>
-                                                    </td>
-                                                    <td><a href="/inv/edit/<%= vehicle.inv_id %>">Edit</a></td>
-                                                    <td><a href="/inv/delete/<%= vehicle.inv_id %>">Delete</a></td>
-                                                </tr>
-                                                <% }) %>
-                                        </tbody>
-                                    </table>
-                                    <% } else if (selectedClassification) { %>
-                                        <p>No vehicles found for this classification.</p>
+                    <!-- ✅ Updated to match correct controller route -->
+                    <form id="classificationForm" action="/inv/management-table" method="get">
+                        <label for="classification_id">Select a Classification:</label>
+                        <select id="classification_id" name="classification_id" onchange="this.form.submit()">
+                            <option value="">-- Select --</option>
+                            <% if (classifications && classifications.length> 0) { %>
+                                <% classifications.forEach(classification=> { %>
+                                    <option value="<%= classification.classification_id %>"
+                                        <%=selectedClassification==classification.classification_id ? "selected" : "" %>
+                                        >
+                                        <%= classification.classification_name %>
+                                    </option>
+                                    <% }) %>
                                         <% } %>
-                            </section>
-                </main>
+                        </select>
+                    </form>
 
-    </body>
+                    <% if (vehicles && vehicles.length> 0) { %>
+                        <table class="inventory-table">
+                            <thead>
+                                <tr>
+                                    <th>Classification</th>
+                                    <th>Make</th>
+                                    <th>Model</th>
+                                    <th>Year</th>
+                                    <th>Price</th>
+                                    <th>Color</th>
+                                    <th>Miles</th>
+                                    <th>Edit</th>
+                                    <th>Delete</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% vehicles.forEach(vehicle=> { %>
+                                    <tr>
+                                        <td>
+                                            <%= vehicle.classification_name %>
+                                        </td>
+                                        <td>
+                                            <%= vehicle.inv_make %>
+                                        </td>
+                                        <td>
+                                            <%= vehicle.inv_model %>
+                                        </td>
+                                        <td>
+                                            <%= vehicle.inv_year %>
+                                        </td>
+                                        <td>$<%= vehicle.inv_price.toLocaleString() %>
+                                        </td>
+                                        <td>
+                                            <%= vehicle.inv_color %>
+                                        </td>
+                                        <td>
+                                            <%= vehicle.inv_miles.toLocaleString() %>
+                                        </td>
+                                        <td><a href="/inv/edit/<%= vehicle.inv_id %>">Edit</a></td>
+                                        <td><a href="/inv/delete/<%= vehicle.inv_id %>">Delete</a></td>
+                                    </tr>
+                                    <% }) %>
+                            </tbody>
+                        </table>
+                        <% } else if (selectedClassification) { %>
+                            <p>No vehicles found for this classification.</p>
+                            <% } %>
+                </section>
+    </main>
+</body>
 
 </html>

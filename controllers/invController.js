@@ -10,10 +10,15 @@ invCont.buildManagementView = async function (req, res, next) {
   try {
     const nav = await utilities.getNav()
     const classifications = await invModel.getClassifications()
+
+    // ✅ Add classification select list for AJAX dropdown
+    const classificationSelect = await utilities.buildClassificationList()
+
     res.render("inventory/management", {
       title: "Inventory Management",
       nav,
       classifications,
+      classificationSelect, // ✅ passed to view for select dropdown
       vehicles: [],
       selectedClassification: null,
       errors: null,
@@ -32,6 +37,7 @@ invCont.buildManagementTable = async function (req, res, next) {
     const classification_id = req.query.classification_id || null
     const nav = await utilities.getNav()
     const classifications = await invModel.getClassifications()
+    const classificationSelect = await utilities.buildClassificationList()
 
     let vehicles = []
     if (classification_id) {
@@ -42,6 +48,7 @@ invCont.buildManagementTable = async function (req, res, next) {
       title: "Inventory Management",
       nav,
       classifications,
+      classificationSelect,
       vehicles,
       selectedClassification: classification_id,
       errors: null,
@@ -59,7 +66,7 @@ invCont.buildByClassificationId = async function (req, res, next) {
   try {
     const classification_id = req.params.classificationId
     const data = await invModel.getInventoryByClassificationId(classification_id)
-    const grid = await utilities.buildClassificationGrid(data) // ✅ restored await
+    const grid = await utilities.buildClassificationGrid(data)
     const nav = await utilities.getNav()
     const className = data[0]?.classification_name || "Unknown"
 
@@ -351,6 +358,19 @@ invCont.deleteInventory = async function (req, res, next) {
     res.redirect("/inv")
   } catch (err) {
     next(err)
+  }
+}
+
+/* ****************************************
+ *  Return Inventory by Classification As JSON
+ * **************************************** */
+invCont.getInventoryJSON = async (req, res, next) => {
+  const classification_id = parseInt(req.params.classification_id)
+  const invData = await invModel.getInventoryByClassificationId(classification_id)
+  if (invData[0]?.inv_id) {
+    return res.json(invData)
+  } else {
+    next(new Error("No data returned"))
   }
 }
 

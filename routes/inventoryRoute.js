@@ -71,8 +71,7 @@ router.post(
 /* ****************************************
  *  Build Management Table (Dropdown Filter)
  * **************************************** */
-// 🛠 FIXED: Use /management-table to avoid clashing with root ("/")
-// The previous "/management/:classificationId?" caused confusion
+// ✅ Stable route name avoids collision with "/"
 router.get(
   "/management-table",
   utilities.handleErrors(invController.buildManagementTable)
