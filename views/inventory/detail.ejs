@@ -1,11 +1,40 @@
-<main class="container">
-    <% if (title) { %>
-        <h1 class="page-title">
-            <%= title %> 
-        </h1>
-        <% } %>
 
-            <section class="vehicle-detail-wrapper">
-                <%- detail %>
-            </section>
-</main>
+
+    <body>
+    
+
+                <main>
+                    <% if (vehicle) { %>
+                        <section class="vehicle-detail-wrapper">
+                            <div class="vehicle-image">
+                                <img src="<%= vehicle.inv_image %>"
+                                    alt="<%= vehicle.inv_make %> <%= vehicle.inv_model %>">
+                            </div>
+
+                            <div class="vehicle-info">
+                                <h1>
+                                    <%= vehicle.inv_year %>
+                                        <%= vehicle.inv_make %>
+                                            <%= vehicle.inv_model %>
+                                </h1>
+                                <p><strong>Price:</strong> $<%= vehicle.inv_price.toLocaleString() %>
+                                </p>
+                                <p><strong>Miles:</strong>
+                                    <%= vehicle.inv_miles.toLocaleString() %> miles
+                                </p>
+                                <p><strong>Color:</strong>
+                                    <%= vehicle.inv_color %>
+                                </p>
+                                <p><strong>Description:</strong>
+                                    <%= vehicle.inv_description %>
+                                </p>
+                            </div>
+                        </section>
+                        <% } else { %>
+                            <p>Vehicle not found.</p>
+                            <% } %>
+                </main>
+
+    </body>
+
+</html>

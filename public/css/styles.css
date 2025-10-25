@@ -81,9 +81,20 @@ nav {
 nav ul {
   list-style: none;
   display: flex;
-  justify-content: space-around;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1.5rem;
   padding: 0;
   margin: 0;
+}
+
+nav ul li {
+  display: inline-block;
+}
+
+.account-menu {
+  margin-left: auto;
+  /* pushes it to the right side */
 }
 
 nav a {
@@ -201,12 +212,12 @@ nav a {
 
 
 /* ********* Base Styles ********* */
-* {
+/* * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
   font-family: Arial, sans-serif;
-}
+} */
 
 body {
   color: #222;
@@ -302,19 +313,49 @@ nav ul li a:hover {
 }
 
 
-/* Vehicle detail styles */
-/* Vehicle detail styles */
+
+.vehicle-detail-wrapper {
+  display: flex;
+  align-items: flex-start;
+  gap: 2rem;
+  padding: 2rem;
+}
+
+.vehicle-image img {
+  max-width: 400px;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.vehicle-info {
+  max-width: 600px;
+}
+
+.vehicle-info h1 {
+  margin-top: 0;
+  font-size: 1.8rem;
+}
+
+.vehicle-info p {
+  margin: 0.5rem 0;
+  line-height: 1.5;
+}
+
+/* ===== Vehicle Detail Layout ===== */
 .vehicle-detail {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  /* image left, details right */
+  /* left: image, right: text */
   gap: 2rem;
   align-items: start;
-  margin: 2rem 0;
+  margin: 2rem auto;
   padding: 1.5rem;
   background: #c7edf8;
   border-radius: 10px;
   box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
+  max-width: 1000px;
+  width: 100%;
 }
 
 .vehicle-image img {
@@ -323,6 +364,12 @@ nav ul li a:hover {
   border-radius: 10px;
   display: block;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.vehicle-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 }
 
 .vehicle-info h1 {
@@ -388,6 +435,12 @@ nav ul li a:hover {
   font-weight: bold;
 }
 
+/* ===== Responsive Fix for Smaller Screens ===== */
+@media (max-width: 768px) {
+  .vehicle-detail {
+    grid-template-columns: 1fr;
+  }
+}
 
 /* Flash Messages Styling */
 .flash-container {
@@ -1229,6 +1282,28 @@ button:hover {
 .validation-errors li {
   color: #b20000;
 }
+
+
+.flash-message {
+  padding: 10px;
+  margin: 15px 0;
+  border-radius: 5px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.flash-message.success {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.flash-message.error {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
 
 @media (max-width: 600px) {
   main.add-inventory {

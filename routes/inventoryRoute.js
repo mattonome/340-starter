@@ -1,114 +1,80 @@
-// ********************************************
-// Inventory Routes
-// ********************************************
-
+/******************************************
+ * Inventory Routes
+ ******************************************/
 const express = require("express")
-const router = new express.Router()
+const router = express.Router()
 const invController = require("../controllers/invController")
 const utilities = require("../utilities")
-const invValidate = require("../utilities/inv-validation")
 
-/* ****************************************
- *  Inventory Management View
- * **************************************** */
+// Redirect /inv to /inv/management
+router.get("/", (req, res) => {
+  res.redirect("/inv/management")
+})
+
+// Inventory management pages
 router.get(
-  "/",
-  utilities.handleErrors(invController.buildManagementView)
+  "/management",
+  utilities.handleErrors(invController.buildManagement)
 )
-
-/* ****************************************
- *  Build inventory by classification view
- * **************************************** */
-router.get(
-  "/type/:classificationId",
-  utilities.handleErrors(invController.buildByClassificationId)
-)
-
-/* ****************************************
- *  Build vehicle detail view
- * **************************************** */
-router.get(
-  "/detail/:invId",
-  utilities.handleErrors(invController.buildByInvId)
-)
-
-/* ****************************************
- *  Build "Add Classification" View
- * **************************************** */
-router.get(
-  "/add-classification",
-  utilities.handleErrors(invController.buildAddClassification)
-)
-
-/* ****************************************
- *  Process "Add Classification" Form
- * **************************************** */
-router.post(
-  "/add-classification",
-  invValidate.classificationRules(),
-  invValidate.checkClassificationData,
-  utilities.handleErrors(invController.addClassification)
-)
-
-/* ****************************************
- *  Build "Add New Car" View
- * **************************************** */
-router.get(
-  "/add-inventory",
-  utilities.handleErrors(invController.buildAddInventory)
-)
-
-/* ****************************************
- *  Process "Add New Car" Form
- * **************************************** */
-router.post(
-  "/add-inventory",
-  invValidate.inventoryRules(),
-  invValidate.checkInventoryData,
-  utilities.handleErrors(invController.addInventory)
-)
-
-/* ****************************************
- *  Build Management Table (Dropdown Filter)
- * **************************************** */
-// ✅ Stable route name avoids collision with "/"
 router.get(
   "/management-table",
   utilities.handleErrors(invController.buildManagementTable)
 )
 
-/* ****************************************
- *  Build "Edit Inventory" View
- * **************************************** */
+// Public inventory by classification
 router.get(
-  "/edit/:invId",
-  utilities.handleErrors(invController.buildEditInventory)
+  "/type/:classification_id",
+    utilities.handleErrors(invController.buildInventoryByClassification)
 )
 
-/* ****************************************
- *  Process "Edit Inventory" Form
- * **************************************** */
+router.get("/detail/:inv_id", invController.buildVehicleDetail)
+
+
+// Add inventory
+router.get(
+  "/add-inventory",
+  utilities.handleErrors(invController.buildAddInventory)
+)
 router.post(
-  "/update",
-  invValidate.inventoryRules(),
-  invValidate.checkInventoryData,
+  "/add-inventory",
+  utilities.handleErrors(invController.addInventory)
+)
+
+// Edit inventory
+router.get(
+  "/edit/:inv_id",
+  utilities.handleErrors(invController.editInventoryView)
+)
+router.post(
+  "/update-inventory",
   utilities.handleErrors(invController.updateInventory)
 )
 
-/* ****************************************
- *  Build "Delete Inventory" View
- * **************************************** */
+// Add classification
 router.get(
-  "/delete/:invId",
-  utilities.handleErrors(invController.buildDeleteInventory)
+  "/add-classification",
+  utilities.handleErrors(invController.buildAddClassification)
+)
+router.post(
+  "/add-classification",
+  utilities.handleErrors(invController.addClassification)
 )
 
-/* ****************************************
- *  Process "Delete Inventory" Form
- * **************************************** */
+// Delete inventory (POST)
 router.post(
-  "/delete",
-  utilities.handleErrors(invController.deleteInventory)
+  "/delete/:inv_id",
+  utilities.handleErrors(async (req, res, next) => {
+    const inv_id = parseInt(req.params.inv_id)
+    const deleted = await invController.deleteInventory(inv_id)
+
+    if (deleted) {
+      req.flash("success_msg", "Vehicle deleted successfully!")
+    } else {
+      req.flash("error_msg", "Failed to delete vehicle.")
+    }
+
+    res.redirect("/inv/management")
+  })
 )
 
 module.exports = router

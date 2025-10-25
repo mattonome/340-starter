@@ -42,9 +42,43 @@ router.post(
 // ******************************************
 router.get(
   "/",
-  utilities.checkJWTToken, // middleware to verify cookie token
+  utilities.checkJWTToken, // verify JWT cookie
   utilities.checkLogin,    // redirect if not logged in
   utilities.handleErrors(accountController.buildAccountManagement)
+);
+
+// ******************************************
+// Deliver account update view (protected)
+// ******************************************
+router.get(
+  "/update/:account_id",
+  utilities.checkJWTToken,
+  utilities.checkLogin,
+  utilities.handleErrors(accountController.buildAccountUpdate)
+);
+
+// ******************************************
+// Process account info update
+// ******************************************
+router.post(
+  "/update",
+  utilities.checkJWTToken,
+  utilities.checkLogin,
+  regValidate.updateRules(), // validation rules for first, last, email
+  regValidate.checkUpdateData,
+  utilities.handleErrors(accountController.updateAccountInfo)
+);
+
+// ******************************************
+// Process password change
+// ******************************************
+router.post(
+  "/update-password",
+  utilities.checkJWTToken,
+  utilities.checkLogin,
+  regValidate.passwordRules(), // validation rules for password
+  regValidate.checkPasswordData,
+  utilities.handleErrors(accountController.updatePassword)
 );
 
 // ******************************************

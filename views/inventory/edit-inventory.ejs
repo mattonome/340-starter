@@ -4,54 +4,90 @@
         
 
                 <main class="edit-inventory">
-                    <h1>Edit Vehicle</h1>
+                    <h1>
+                        <%= title %>
+                    </h1>
 
-                    <form action="/inv/edit" method="post" class="inventory-form">
-                        <input type="hidden" name="inv_id" value="<%= itemData.inv_id %>">
+                    <!-- ===============================
+             Flash / Message Handling
+        =============================== -->
+                    <% if (messages && Object.keys(messages).length> 0) { %>
+                        <div id="flash-messages">
+                            <% Object.keys(messages).forEach(function(type) { %>
+                                <% messages[type].forEach(function(message) { %>
+                                    <div class="flash-item <%= type %>">
+                                        <span>
+                                            <%= message %>
+                                        </span>
+                                        <button class="close-btn" onclick="this.parentElement.remove()">×</button>
+                                    </div>
+                                    <% }) %>
+                                        <% }) %>
+                        </div>
+                        <% } %>
 
-                        <label for="classification_id">Classification:</label>
-                        <select name="classification_id" id="classification_id" required>
-                            <% classifications.forEach(classification=> { %>
-                                <option value="<%= classification.classification_id %>"
-                                    <%=classification.classification_id==itemData.classification_id ? "selected" : "" %>
-                                    >
-                                    <%= classification.classification_name %>
-                                </option>
-                                <% }) %>
-                        </select>
+                            <!-- ===============================
+             Validation Errors
+        =============================== -->
+                            <% if (errors && errors.length> 0) { %>
+                                <div class="validation-errors">
+                                    <ul>
+                                        <% errors.forEach(err=> { %>
+                                            <li>
+                                                <%= err.msg %>
+                                            </li>
+                                            <% }) %>
+                                    </ul>
+                                </div>
+                                <% } %>
 
-                        <label for="inv_make">Make:</label>
-                        <input type="text" name="inv_make" id="inv_make" value="<%= itemData.inv_make %>" required>
+                                    <!-- ===============================
+             Edit Inventory Form
+        =============================== -->
+                                    <form action="/inv/update-inventory" method="POST" class="inventory-form">
+                                        <input type="hidden" name="inv_id" value="<%= vehicle.inv_id %>">
 
-                        <label for="inv_model">Model:</label>
-                        <input type="text" name="inv_model" id="inv_model" value="<%= itemData.inv_model %>" required>
+                                        <label for="classification_id">Classification:</label>
+                                        <%- classificationSelect %>
 
-                        <label for="inv_year">Year:</label>
-                        <input type="number" name="inv_year" id="inv_year" value="<%= itemData.inv_year %>" required>
+                                            <label for="inv_make">Make:</label>
+                                            <input type="text" id="inv_make" name="inv_make"
+                                                value="<%= vehicle.inv_make || '' %>" required>
 
-                        <label for="inv_color">Color:</label>
-                        <input type="text" name="inv_color" id="inv_color" value="<%= itemData.inv_color %>" required>
+                                            <label for="inv_model">Model:</label>
+                                            <input type="text" id="inv_model" name="inv_model"
+                                                value="<%= vehicle.inv_model || '' %>" required>
 
-                        <label for="inv_description">Description:</label>
-                        <textarea name="inv_description" id="inv_description"
-                            required><%= itemData.inv_description %></textarea>
+                                            <label for="inv_year">Year:</label>
+                                            <input type="number" id="inv_year" name="inv_year"
+                                                value="<%= vehicle.inv_year || '' %>" required>
 
-                        <label for="inv_image">Image Path:</label>
-                        <input type="text" name="inv_image" id="inv_image" value="<%= itemData.inv_image %>" required>
+                                            <label for="inv_description">Description:</label>
+                                            <textarea id="inv_description" name="inv_description"
+                                                required><%= vehicle.inv_description || '' %></textarea>
 
-                        <label for="inv_thumbnail">Thumbnail Path:</label>
-                        <input type="text" name="inv_thumbnail" id="inv_thumbnail" value="<%= itemData.inv_thumbnail %>"
-                            required>
+                                            <label for="inv_image">Image Path:</label>
+                                            <input type="text" id="inv_image" name="inv_image"
+                                                value="<%= vehicle.inv_image || '' %>" required>
 
-                        <label for="inv_price">Price (₦):</label>
-                        <input type="number" name="inv_price" id="inv_price" step="0.01"
-                            value="<%= itemData.inv_price %>" required>
+                                            <label for="inv_thumbnail">Thumbnail Path:</label>
+                                            <input type="text" id="inv_thumbnail" name="inv_thumbnail"
+                                                value="<%= vehicle.inv_thumbnail || '' %>" required>
 
-                        <label for="inv_miles">Miles:</label>
-                        <input type="number" name="inv_miles" id="inv_miles" value="<%= itemData.inv_miles %>" required>
+                                            <label for="inv_price">Price:</label>
+                                            <input type="number" id="inv_price" name="inv_price"
+                                                value="<%= vehicle.inv_price || '' %>" required>
 
-                        <button type="submit">Update Vehicle</button>
-                    </form>
+                                            <label for="inv_miles">Miles:</label>
+                                            <input type="number" id="inv_miles" name="inv_miles"
+                                                value="<%= vehicle.inv_miles || '' %>" required>
+
+                                            <label for="inv_color">Color:</label>
+                                            <input type="text" id="inv_color" name="inv_color"
+                                                value="<%= vehicle.inv_color || '' %>" required>
+
+                                            <button type="submit">Update Vehicle</button>
+                                    </form>
                 </main>
 
     </body>

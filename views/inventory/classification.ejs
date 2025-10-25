@@ -1,9 +1,36 @@
-<% if (title) { %>
-    <h1>
-        <%= title %>
-    </h1>
-    <% } else { res.redirect('/') } %>
 
-    <%# messages() %>
-    
-    <%- grid %>
+    <body>
+     
+
+                <main>
+                    <% if (title) { %>
+                        <h1>
+                            <%= title %>
+                        </h1>
+                        <% } %>
+
+                            <%# Display flash messages if any %>
+                                <% if (messages && Object.keys(messages).length> 0) { %>
+                                    <div class="messages">
+                                        <% Object.entries(messages).forEach(([type, msgs])=> { %>
+                                            <% msgs.forEach(msg=> { %>
+                                                <p class="<%= type %>">
+                                                    <%= msg %>
+                                                </p>
+                                                <% }) %>
+                                                    <% }) %>
+                                    </div>
+                                    <% } %>
+
+                                        <%# Display the vehicle grid %>
+                                            <% if (typeof grid !=='undefined' && grid) { %>
+                                                <%- grid %>
+                                                    <% } else { %>
+                                                        <p class="notice">No vehicles available for this classification.
+                                                        </p>
+                                                        <% } %>
+                </main>
+
+    </body>
+
+</html>

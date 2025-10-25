@@ -1,0 +1,50 @@
+
+
+    <body>
+       
+
+                <main class="management">
+                    <h1>Delete Vehicle</h1>
+
+                    <% if (messages && Object.keys(messages).length> 0) { %>
+                        <div id="flash-messages">
+                            <% Object.keys(messages).forEach(function(type) { %>
+                                <% messages[type].forEach(function(message) { %>
+                                    <div class="flash-item <%= type %>">
+                                        <span>
+                                            <%= message %>
+                                        </span>
+                                        <button class="close-btn" onclick="this.parentElement.remove()">×</button>
+                                    </div>
+                                    <% }) %>
+                                        <% }) %>
+                        </div>
+                        <% } %>
+
+                            <p><strong>Confirm Deletion - This action is permanent and cannot be undone.</strong></p>
+
+                            <form action="/inv/delete" method="post" class="inventory-form">
+                                <input type="hidden" name="inv_id" value="<%= itemData.inv_id %>">
+
+                                <label>Make:</label>
+                                <input type="text" readonly value="<%= itemData.inv_make %>">
+
+                                <label>Model:</label>
+                                <input type="text" readonly value="<%= itemData.inv_model %>">
+
+                                <label>Year:</label>
+                                <input type="text" readonly value="<%= itemData.inv_year %>">
+
+                                <label>Price:</label>
+                                <input type="text" readonly value="<%= Number(itemData.inv_price).toLocaleString() %>">
+
+                                <div style="margin-top:1rem;">
+                                    <button type="submit">Delete</button>
+                                    <a href="/inv" style="margin-left:1rem;">Cancel</a>
+                                </div>
+                            </form>
+                </main>
+
+    </body>
+
+</html>

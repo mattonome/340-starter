@@ -1,0 +1,37 @@
+<%- include("../partials/head") %>
+    <%- include("../partials/header") %>
+
+        <body>
+            <main>
+                <h1>Update Account</h1>
+
+                <% if (messages) { %>
+                    <% Object.keys(messages).forEach(key=> messages[key].forEach(msg => { %>
+                        <div class="<%= key %>">
+                            <%= msg %>
+                        </div>
+                        <% })) %>
+                            <% } %>
+
+                                <form action="/account/update" method="post">
+                                    <input type="hidden" name="account_id" value="<%= account.account_id %>">
+                                    <label>First Name: <input type="text" name="account_firstname"
+                                            value="<%= account.account_firstname %>" required></label>
+                                    <label>Last Name: <input type="text" name="account_lastname"
+                                            value="<%= account.account_lastname %>" required></label>
+                                    <label>Email: <input type="email" name="account_email"
+                                            value="<%= account.account_email %>" required></label>
+                                    <input type="submit" value="Update Account">
+                                </form>
+
+                                <form action="/account/password" method="post">
+                                    <input type="hidden" name="account_id" value="<%= account.account_id %>">
+                                    <label>New Password: <input type="password" name="account_password"
+                                            required></label>
+                                    <p>Password must meet required length and character criteria.</p>
+                                    <input type="submit" value="Change Password">
+                                </form>
+            </main>
+        </body>
+
+        </html>

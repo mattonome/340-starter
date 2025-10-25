@@ -1,31 +1,38 @@
 
 
     <body>
-      
+       
+
                 <main>
                     <h1>Delete Vehicle</h1>
                     <p>Are you sure you want to delete the following vehicle?</p>
 
-                    <ul>
-                        <li><strong>Make:</strong>
-                            <%= itemData.inv_make %>
-                        </li>
-                        <li><strong>Model:</strong>
-                            <%= itemData.inv_model %>
-                        </li>
-                        <li><strong>Year:</strong>
-                            <%= itemData.inv_year %>
-                        </li>
-                        <li><strong>Price:</strong> $<%= itemData.inv_price.toLocaleString() %>
-                        </li>
-                    </ul>
+                    <% if (vehicle) { %>
+                        <ul>
+                            <li><strong>Make:</strong>
+                                <%= vehicle.inv_make %>
+                            </li>
+                            <li><strong>Model:</strong>
+                                <%= vehicle.inv_model %>
+                            </li>
+                            <li><strong>Year:</strong>
+                                <%= vehicle.inv_year %>
+                            </li>
+                            <li><strong>Price:</strong> $<%= Number(vehicle.inv_price).toLocaleString() %>
+                            </li>
+                        </ul>
 
-                    <form action="/inv/delete" method="post">
-                        <input type="hidden" name="inv_id" value="<%= itemData.inv_id %>">
-                        <button type="submit">Yes, Delete</button>
-                        <a href="/inv/management">Cancel</a>
-                    </form>
+                        <form action="/inv/delete" method="post">
+                            <input type="hidden" name="inv_id" value="<%= vehicle.inv_id %>">
+                            <button type="submit">Yes, Delete</button>
+                            <a href="/inv/management">Cancel</a>
+                        </form>
+                        <% } else { %>
+                            <p class="notice">Vehicle not found.</p>
+                            <a href="/inv/management">Return to Inventory Management</a>
+                            <% } %>
                 </main>
+
     </body>
 
 </html>

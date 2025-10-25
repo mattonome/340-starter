@@ -1,62 +1,43 @@
 
 
-    <body>
-      
-
-                <main class="add-classification">
+            <body>
+                <main class="management">
                     <h1>
                         <%= title %>
                     </h1>
 
-                    <!-- Flash messages -->
-                    <% if (messages && (messages.notice || messages.error)) { %>
-                        <div class="flash-message">
-                            <% if (messages.notice) { %>
-                                <p class="success">
-                                    <%= messages.notice %>
-                                </p>
-                                <% } %>
-                                    <% if (messages.error) { %>
-                                        <p class="error">
-                                            <%= messages.error %>
-                                        </p>
-                                        <% } %>
+                    <!-- Flash / Message Handling -->
+                    <% if (messages && Object.keys(messages).length> 0) { %>
+                        <div id="flash-messages">
+                            <% Object.keys(messages).forEach(function(key) { const msgs=Array.isArray(messages[key]) ?
+                                messages[key] : [messages[key]]; const typeClass=key==='success_msg' ? 'success' :
+                                key==='error_msg' ? 'error' : key; %>
+                                <% msgs.forEach(function(message) { %>
+                                    <div class="flash-item <%= typeClass %>">
+                                        <span>
+                                            <%= message %>
+                                        </span>
+                                        <button class="close-btn" onclick="this.parentElement.remove()">×</button>
+                                    </div>
+                                    <% }) %>
+                                        <% }) %>
                         </div>
                         <% } %>
 
-                            <!-- Validation errors -->
-                            <% if (errors && errors.length> 0) { %>
-                                <div class="validation-errors">
-                                    <ul>
-                                        <% errors.forEach(err=> { %>
-                                            <li>
-                                                <%= err.msg %>
-                                            </li>
-                                            <% }) %>
-                                    </ul>
-                                </div>
-                                <% } %>
-
-                                    <!-- Classification form -->
-                                    <form action="/inv/add-classification" method="POST" class="classification-form">
-                                        <label for="classification_name">Classification Name:</label>
-                                        <input type="text" id="classification_name" name="classification_name"
-                                            value="<%= classification_name || '' %>"
-                                            placeholder="Enter classification name" required>
-                                        <button type="submit">Add Classification</button>
-                                    </form>
-
-                                    <!-- Quick navigation links -->
-                                    <section class="management-links">
-                                        <h2>Quick Links</h2>
-                                        <ul>
-                                            <li><a href="/inv/add-classification">Add New Classification</a></li>
-                                            <li><a href="/inv/add-inventory">Add New Inventory Item</a></li>
-                                            <li><a href="/inv/new-car">New Car</a></li>
-                                        </ul>
-                                    </section>
+                            <form action="/inv/add-classification" method="post">
+                                <label for="classification_name">Classification Name</label>
+                                <input type="text" name="classification_name" id="classification_name"
+                                    value="<%= classification_name %>" required>
+                                <button type="submit">Add Classification</button>
+                            </form>
                 </main>
 
-    </body>
+                <script>
+                    setTimeout(() => {
+                        const flashContainer = document.getElementById('flash-messages');
+                        if (flashContainer) flashContainer.remove();
+                    }, 5000);
+                </script>
+            </body>
 
-</html>
+            </html>

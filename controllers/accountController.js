@@ -11,7 +11,7 @@ const utilities = require("../utilities/");
  ******************************************/
 async function buildLogin(req, res) {
   const nav = await utilities.getNav();
-  const messages = req.flash("notice"); // ✅ fetch flash message
+  const messages = req.flash("notice"); // fetch flash messages
   res.render("account/login", {
     title: "Login",
     nav,
@@ -40,10 +40,7 @@ async function registerAccount(req, res) {
   const { account_firstname, account_lastname, account_email, account_password } = req.body;
 
   try {
-    // Hash the password
     const hashedPassword = await bcrypt.hash(account_password, 10);
-
-    // Save the account
     const regResult = await accountModel.registerAccount(
       account_firstname,
       account_lastname,
@@ -52,8 +49,8 @@ async function registerAccount(req, res) {
     );
 
     if (regResult) {
-      req.flash("notice", "Registration successful. Please log in."); // ✅ flash message
-      return res.redirect("/account/login"); // ✅ redirect instead of render
+      req.flash("notice", "Registration successful. Please log in.");
+      return res.redirect("/account/login");
     } else {
       return res.status(500).render("account/register", {
         title: "Register",
@@ -79,7 +76,6 @@ async function accountLogin(req, res) {
   const { account_email, account_password } = req.body;
 
   try {
-    // Get user by email
     const accountData = await accountModel.getAccountByEmail(account_email);
 
     if (!accountData) {
@@ -90,7 +86,6 @@ async function accountLogin(req, res) {
       });
     }
 
-    // Compare passwords
     const match = await bcrypt.compare(account_password, accountData.account_password);
     if (!match) {
       return res.status(400).render("account/login", {
@@ -104,7 +99,7 @@ async function accountLogin(req, res) {
     delete accountData.account_password;
     const token = jwt.sign(accountData, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "1h" });
 
-    // Set token as HTTP-only cookie
+    // Set HTTP-only cookie
     res.cookie("jwt", token, {
       httpOnly: true,
       maxAge: 3600 * 1000,
@@ -126,12 +121,79 @@ async function accountLogin(req, res) {
  ******************************************/
 async function buildAccountManagement(req, res, next) {
   const nav = await utilities.getNav();
+  const accountData = res.locals.accountData; // fetched from JWT middleware
 
   res.render("account/account-management", {
     title: "Account Management",
     nav,
+    accountData,
     errors: null,
+    messages: req.flash(),
   });
+}
+
+/******************************************
+ * Deliver Account Update View
+ ******************************************/
+async function buildAccountUpdate(req, res, next) {
+  const nav = await utilities.getNav();
+  const account_id = parseInt(req.params.account_id);
+  const accountData = await accountModel.getAccountById(account_id);
+
+  res.render("account/update-account", {
+    title: "Update Account",
+    nav,
+    accountData,
+    errors: null,
+    messages: req.flash(),
+  });
+}
+
+/******************************************
+ * Process Account Info Update
+ ******************************************/
+async function updateAccountInfo(req, res, next) {
+  const { account_id, account_firstname, account_lastname, account_email } = req.body;
+
+  try {
+    const result = await accountModel.updateAccount(account_id, account_firstname, account_lastname, account_email);
+
+    if (result) {
+      req.flash("success_msg", "Account information updated successfully.");
+    } else {
+      req.flash("error_msg", "Failed to update account information.");
+    }
+
+    return res.redirect("/account");
+  } catch (error) {
+    console.error("Account Update Error:", error);
+    req.flash("error_msg", "An unexpected error occurred. Please try again.");
+    return res.redirect("/account/update/" + account_id);
+  }
+}
+
+/******************************************
+ * Process Password Change
+ ******************************************/
+async function updatePassword(req, res, next) {
+  const { account_id, account_password } = req.body;
+
+  try {
+    const hashedPassword = await bcrypt.hash(account_password, 10);
+    const result = await accountModel.updatePassword(account_id, hashedPassword);
+
+    if (result) {
+      req.flash("success_msg", "Password updated successfully.");
+    } else {
+      req.flash("error_msg", "Failed to update password.");
+    }
+
+    return res.redirect("/account");
+  } catch (error) {
+    console.error("Password Update Error:", error);
+    req.flash("error_msg", "An unexpected error occurred. Please try again.");
+    return res.redirect("/account/update/" + account_id);
+  }
 }
 
 /******************************************
@@ -142,5 +204,8 @@ module.exports = {
   buildRegister,
   registerAccount,
   accountLogin,
-  buildAccountManagement, // ✅ make sure this is exported
+  buildAccountManagement,
+  buildAccountUpdate,
+  updateAccountInfo,
+  updatePassword,
 };
