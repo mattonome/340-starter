@@ -328,13 +328,43 @@ async function deleteInventory(inv_id) {
 }
 
 /* ****************************************
+ * Search vehicles
+ **************************************** */
+async function searchInventory(req, res, next) {
+  try {
+    const searchTerm = req.query.q
+    const nav = await utilities.getNav()
+
+    if (!searchTerm || searchTerm.trim() === "") {
+      req.flash("error_msg", "Please enter a search term.")
+      return res.redirect("/")
+    }
+
+    // fetch vehicles matching term
+    const vehicles = await invModel.searchInventory(searchTerm)
+
+    res.render("inventory/search-results", {
+      title: `Search Results for "${searchTerm}"`,
+      nav,
+      vehicles,
+      searchTerm,
+      messages: req.flash(),
+      errors: null,
+    })
+  } catch (error) {
+    next(error)
+  }
+}
+
+
+/* ****************************************
  * Exports
  ****************************************/
 module.exports = {
   buildManagement,
   buildManagementTable,
   buildInventoryByClassification,
-  buildVehicleDetail, // <-- add this line
+  buildVehicleDetail, 
   buildAddInventory,
   addInventory,
   editInventoryView,
@@ -342,4 +372,6 @@ module.exports = {
   buildAddClassification,
   addClassification,
   deleteInventory,
+  searchInventory, 
+
 }

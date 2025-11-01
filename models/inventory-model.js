@@ -152,6 +152,30 @@ async function deleteCar(inv_id) {
   }
 }
 
+
+/* ****************************************
+ * Search inventory
+ **************************************** */
+async function searchInventory(term) {
+  try {
+    const sql = `
+      SELECT inv_id, inv_make, inv_model, inv_year, inv_price, inv_image
+      FROM public.inventory
+      WHERE inv_make ILIKE $1
+         OR inv_model ILIKE $1
+         OR inv_description ILIKE $1
+      ORDER BY inv_make
+    `
+    const result = await pool.query(sql, [`%${term}%`])
+    return result.rows
+  } catch (error) {
+    console.error("❌ searchInventory error:", error)
+    throw error
+  }
+}
+
+
+
 // Exports
 module.exports = {
   getClassifications,
@@ -161,4 +185,6 @@ module.exports = {
   addCar,
   updateCar,
   deleteCar,
+  searchInventory, 
+
 }

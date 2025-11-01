@@ -9,7 +9,7 @@ const pool = require("../database/")
 async function searchInventory(keyword) {
   try {
     const sql = `
-      SELECT i.inv_id, i.inv_make, i.inv_model, i.inv_price, i.inv_description, c.classification_name
+      SELECT i.inv_id, i.inv_make, i.inv_model, i.inv_price, i.inv_description,inv_thumbnail, c.classification_name
       FROM public.inventory AS i
       JOIN public.classification AS c ON i.classification_id = c.classification_id
       WHERE i.inv_make ILIKE $1

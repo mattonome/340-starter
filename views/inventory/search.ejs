@@ -27,6 +27,7 @@
                                     <ul>
                                         <% results.forEach(vehicle=> { %>
                                             <li>
+                                                <img src="<%=vehicle.inv_thumbnail %>">
                                                 <a href="/inv/detail/<%= vehicle.inv_id %>">
                                                     <strong>
                                                         <%= vehicle.inv_make %>

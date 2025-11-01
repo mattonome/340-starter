@@ -1,0 +1,28 @@
+
+    <h1>
+        <%= title %>
+    </h1>
+
+    <% if (vehicles.length> 0) { %>
+        <div class="vehicle-grid">
+            <% vehicles.forEach(vehicle=> { %>
+                <div class="vehicle-card">
+                    <a href="/inv/detail/<%= vehicle.inv_id %>">
+                        <img src="<%= vehicle.inv_image %>" alt="<%= vehicle.inv_make + ' ' + vehicle.inv_model %>"
+                            width="250">
+                    </a>
+                    <h2>
+                        <%= vehicle.inv_make %>
+                            <%= vehicle.inv_model %>
+                    </h2>
+                    <p>Year: <%= vehicle.inv_year %>
+                    </p>
+                    <p>Price: $<%= new Intl.NumberFormat().format(vehicle.inv_price) %>
+                    </p>
+                </div>
+                <% }) %>
+        </div>
+        <% } else { %>
+            <p>No results found for "<%= searchTerm %>".</p>
+            <% } %>
+
