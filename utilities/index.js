@@ -23,6 +23,9 @@ Util.getNav = async function () {
       })
     }
 
+    // ✅ Add Search link here (before closing </ul>)
+    list += '<li><a href="/search" title="Search Inventory">Search</a></li>'
+
     list += "</ul>"
     return list
   } catch (error) {

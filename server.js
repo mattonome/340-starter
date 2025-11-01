@@ -19,6 +19,8 @@ const inventoryRoute = require("./routes/inventoryRoute")
 const accountRoute = require("./routes/accountRoute")
 const utilities = require("./utilities")
 const bodyParser = require("body-parser")
+const searchRoute = require("./routes/searchRoute")
+
 
 /* ***********************
  * Express App
@@ -93,6 +95,10 @@ app.set("layout", "./layouts/layout")
 
 // Home route
 app.get("/", utilities.handleErrors(baseController.buildHome))
+
+// Search routes
+app.use("/search", searchRoute)
+
 
 // Inventory routes
 app.use("/inv", inventoryRoute)

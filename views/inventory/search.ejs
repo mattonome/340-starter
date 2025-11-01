@@ -1,0 +1,51 @@
+
+
+    <body>
+       
+
+                <main>
+                    <h1>
+                        <%= title %>
+                    </h1>
+
+                    <form action="/search" method="POST" class="search-form">
+                        <label for="keyword">Search Vehicles:</label>
+                        <input type="text" id="keyword" name="keyword"
+                            placeholder="Enter make, model, or classification" value="<%= keyword || '' %>" required>
+                        <button type="submit">Search</button>
+                    </form>
+
+                    <% if (errors) { %>
+                        <p class="notice">
+                            <%= errors %>
+                        </p>
+                        <% } %>
+
+                            <% if (results && results.length> 0) { %>
+                                <section class="search-results">
+                                    <h2>Results for "<%= keyword %>":</h2>
+                                    <ul>
+                                        <% results.forEach(vehicle=> { %>
+                                            <li>
+                                                <a href="/inv/detail/<%= vehicle.inv_id %>">
+                                                    <strong>
+                                                        <%= vehicle.inv_make %>
+                                                            <%= vehicle.inv_model %>
+                                                    </strong>
+                                                    — <%= vehicle.classification_name %><br>
+                                                        ₦<%= new Intl.NumberFormat().format(vehicle.inv_price) %><br>
+                                                            <em>
+                                                                <%= vehicle.inv_description %>
+                                                            </em>
+                                                </a>
+                                            </li>
+                                            <% }) %>
+                                    </ul>
+                                </section>
+                                <% } %>
+
+                </main>
+
+    </body>
+
+</html>
